@@ -82,5 +82,18 @@ class ViewController: UIViewController, WKNavigationDelegate {  // after name of
         title = webView.title // updates web view title property to page most recently loaded
     }
 
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        let url = navigationAction.request.url // sets url to equal URL of navigation
+        
+        if let host = url?.host {   // if this url has a host pull it out aka. website domain like apple.com
+            for website in websites { // loops through available websites and puts name into website variable
+                if host.contains(website){ // uses contain to see if host site contains website
+                    decisionHandler(.allow) // returns positive message if yes
+                    return
+                }
+            }
+        }
+        decisionHandler(.cancel)  // returns negative if no
+    }
 }
 
